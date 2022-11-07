@@ -3,5 +3,12 @@
 
 bool search(int a[], int n, int x)
 {
-    return 0;
+    if (n == 0)
+        return false;
+    else
+    {
+        if (a[n - 1] == x)
+            return true;
+        search(a, n - 1, x);
+    }
 }
