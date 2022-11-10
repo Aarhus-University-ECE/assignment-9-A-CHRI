@@ -10,28 +10,26 @@
 void DFT(node *root)
 {
   /* Initiate the stack */
-  stack *top = NULL;
+  stack *top = (stack*)malloc(sizeof(stack));
+  top = NULL;
 
   /* Push the root node to the stack */
-  top = push(top, root);
+  push(top, root);  
 
-  /* While the stack is not empty: */
-  while (top != NULL)
-  {
-    /* Create pointers for left and right child */
-    node *left = top->node->lchild;
-    node *right = top->node->rchild;
-    
+  /* While the stack is not empty:*/
+  while(top != NULL) {
+    stack *left = top->next->node->lchild;
+    stack *right = top->next->node->rchild;
+
     /* Pop and visit the top node in the stack */
     top->node->visited = true;
-    top = pop(top);
-
-    /* Add the children to the stack, if there is children */
-    if (right != NULL)
-      top = push(top, right);
-    if (left != NULL)
-      top = push(top, left);
+    pop(top);
+    
+    /* Add the children to the stack */
+    push(top, right);
+    push(top, left);
   }
+
 }
 
 node *make_node(int num, node *left, node *right)
@@ -45,7 +43,7 @@ node *make_node(int num, node *left, node *right)
   new->rchild = right;
   new->visited = false;
 
-  return new;
+  return 0;
 }
 
 void free_node(node *p)
@@ -112,10 +110,10 @@ stack *pop(stack *topp)
   /* Grab the top element*/
   stack *t = topp;
   printf("%d ", t->node->num);
+  free(t);
 
   /* Detach the top element from the stack */
   topp = topp->next;
-  free(t);
 
   /* Return the stack */
   return topp;
